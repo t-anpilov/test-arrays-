@@ -1,57 +1,126 @@
-function go(x, y){
-    if (x.length >= y.length) {
-        checkArray(x, y);         
-    } else {
-        checkArray(y, x);
+let first = [
+    {id: 1, name: 'Peter', firstJob: 'worker'},
+    {id: 2, name: 'Ivan', firstJob: 'designer'},
+    {name: 'Denis', firstJob: 'engineer'},
+    {id: 3, name: 'Mark', firstJob: 'engineer'},
+    {name: 'Franck', firstJob: 'worker'},
+    {id: 5, name: 'Antonio', firstJob: 'hardworker'},
+];
+let second = [
+    {id: 3, lastname: 'Alexov', secondJob: 'worker'},
+    {id: 5, lastname: 'Antonov', secondJob: 'worker'},
+    {lastname: 'Maximov', secondJob: 'worker'},
+    {id: 1, lastname: 'Denisimov', secondJob: 'designer'},
+    {id: 2, lastname: 'Carlov', secondJob: 'engineer'},
+];
+let third = [
+    {id: 1, name: 'Morris', firstJob: 'worker'},
+    {id: 2, name: 'Carl', firstJob: 'engineer'},
+    {name: 'Stiven', firstJob: 'worker'},
+    {id: 11, name: 'Antonina', firstJob: 'designer'},
+    {id: 5, name: 'Wendy', firstJob: 'worker'},
+    {id: 6, name: 'Peter', firstJob: 'engineer'},
+];
+let fourth = [
+    {id: 5, lastname: 'Wendys', secondJob: 'worker'},
+    {id: 6, lastname: 'Peterson', secondJob: 'engineer'},
+    {id: 3, lastname: 'Aleximov', secondJob: 'worker'},
+    {id: 15, lastname: 'Antonovich', secondJob: 'worker'},
+];
+
+
+
+// Log messages in console
+function log(message) {
+    if(message) {
+        console.error(message);
     }
 }
 
-function checkArray(arr1, arr2) {
-    var result = [];
-    let l = arr1.length;
-    let m = arr2.length;
-    
-    let copy_arr2 = arr2.slice(0);
-    
-    for (let i=0; i<l; i++) {
-        
-        for (let j=0; j<m; j++){
-            if ('id' in arr1[i] && 'id' in arr2[j] && arr1[i].id == arr2[j].id) {
-                delete copy_arr2[j];
-            }
-        }
-    }  
-    
-    result = arr1.concat(copy_arr2);
-    result.forEach(elem => {
-        console.log(elem)
-    });
-    return result;
+// Check is it array
+function isArray(arr) {
+    if(arr instanceof Array) {
+        return true;
+    } else {
+        log(arr + ' - is not an array!');
+        return false;
+    }
 }
-//_______________ПЕРЕВІРКА____________________________
-var first = [
-    {id: 1, name: 'Peter', position: 'worker'},
-    {id: 2, name: 'Ivan', position: 'designer'},
-    {name: 'Denis', position: 'engineer'},
-    {id: 3, name: 'Mark', position: 'engineer'},
-    {name: 'Franck', position: 'worker'},
-]
-var second = [
-    {id: 4, name: 'Alex', position: 'worker'},
-    {id: 5, name: 'Anton', position: 'worker'},
-    {name: 'Max', position: 'worker'},
-    {id: 1, name: 'Denis', position: 'designer'},
-]
 
-var third = [
-    {id: 1, name: 'Morris', position: 'worker'},
-    {id: 2, name: 'Carl', position: 'engineer'},
-    {name: 'Stiven', position: 'worker'},
-    {id: 11, name: 'Antonina', position: 'designer'},
-    {id: 5, name: 'Wendy', position: 'worker'},
-    {id: 6, name: 'Peter', position: 'engineer'},
-]
+// Check if array is not empty
+function isArrayEmpty(arr) {
+    if (!arr.length) {
+        log('An array shouldn`t be empty');
+        return false;
+    } else {
+        return true;
+    }
+}
 
-go(first, second);
-console.log('-------------------------------------');
-go(second, third);
+// Check if item in array is object
+function isItemTypeIsObject(item) {
+    if(typeof item != "object") {
+        log(item + ' - is not an object, it`s - ' + typeof item);
+        return false;
+    } else {
+        return true;      
+    }
+}
+
+// Check if user give us two arguments.
+function checkArgumentsLength(args) {
+    if(args.length != 2) {
+        log('Need two arguments. No more, no less!');
+        return false;
+    } else {
+        return true;
+    }
+}
+
+
+// Check if we have objects in array.
+function checkIfContainsObject(array) {
+    let checkedArr = [];
+    if(isArray(array) && isArrayEmpty(array)) {
+        array.forEach(function(item){
+            if(isItemTypeIsObject(item)) {
+                checkedArr.push(item);
+            }
+        });
+    } else {
+        return false;
+    }
+    return checkedArr;
+}
+
+function compareArrayByItem(searchItem, searchPlace) {
+    let mergedObj = {};
+    if(searchItem && searchItem.id) {
+        searchPlace.forEach(function(el){
+            if (el.id && el.id === searchItem.id) {
+                mergedObj = Object.assign(searchItem, el);
+            }
+        });
+    }
+    return mergedObj;
+}
+
+function checkArray(arr1, arr2) {
+    if(checkArgumentsLength(arguments)) {
+        var checkedArr1 = checkIfContainsObject(arr1);
+        var checkedArr2 = checkIfContainsObject(arr2);
+        var resultArray = [];
+        checkedArr1.forEach(function(item){
+            var items = compareArrayByItem(item, checkedArr2)
+            if(Object.keys(items).length !== 0)
+                resultArray.push(items);
+        });
+        if(resultArray) {
+            console.dir(resultArray);
+        }
+    }
+}
+
+checkArray(first, second);
+checkArray(second, third);
+checkArray(third, fourth);
