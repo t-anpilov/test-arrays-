@@ -113,7 +113,11 @@ function checkArray(arr1, arr2) {
         checkedArr1.forEach(function(item){
             var items = compareArrayByItem(item, checkedArr2)
             if(Object.keys(items).length !== 0)
+            {
                 resultArray.push(items);
+            } else {    
+                resultArray.push(item); 
+            }        
         });
         if(resultArray) {
             console.dir(resultArray);
