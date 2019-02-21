@@ -12,6 +12,7 @@ let second = [
     {lastname: 'Maximov', secondJob: 'worker'},
     {id: 1, lastname: 'Denisimov', secondJob: 'designer'},
     {id: 2, lastname: 'Carlov', secondJob: 'engineer'},
+    {id: 8, lastname: 'Hunter', firstJob: 'worker', secondJob: 'engineer'},
 ];
 let third = [
     {id: 1, name: 'Morris', firstJob: 'worker'},
@@ -95,7 +96,7 @@ function checkIfContainsObject(array) {
 
 function compareArrayByItem(searchItem, searchPlace) {
     let mergedObj = {};
-    if(searchItem && searchItem.id) {
+    if(searchItem) {
         searchPlace.forEach(function(el){
             if (el.id && el.id === searchItem.id) {
                 mergedObj = Object.assign(searchItem, el);
@@ -111,13 +112,18 @@ function checkArray(arr1, arr2) {
         var checkedArr2 = checkIfContainsObject(arr2);
         var resultArray = [];
         checkedArr1.forEach(function(item){
-            var items = compareArrayByItem(item, checkedArr2)
+            var items = compareArrayByItem(item, checkedArr2);
             if(Object.keys(items).length !== 0)
             {
                 resultArray.push(items);
             } else {    
                 resultArray.push(item); 
-            }        
+            }    
+        });
+        checkedArr2.forEach(function(item){
+            if(!item.id) {
+                resultArray.push(item);
+            } 
         });
         if(resultArray) {
             console.dir(resultArray);
