@@ -125,6 +125,11 @@ function checkArray(arr1, arr2) {
                 resultArray.push(item);
             } 
         });
+        checkedArr2.forEach(function(item){
+            if (item.id && resultArray.every(function(el){return el.id!==item.id})) {   
+                resultArray.push(item);
+            }    
+        }); 
         if(resultArray) {
             console.dir(resultArray);
         }
