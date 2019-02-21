@@ -123,13 +123,11 @@ function checkArray(arr1, arr2) {
         checkedArr2.forEach(function(item){
             if(!item.id) {
                 resultArray.push(item);
-            } 
-        });
-        checkedArr2.forEach(function(item){
-            if (item.id && resultArray.every(function(el){return el.id!==item.id})) {   
+            } else if (item.id && resultArray.every((el)=>{return el.id!==item.id})) {   
                 resultArray.push(item);
-            }    
-        }); 
+            }
+        });
+        
         if(resultArray) {
             console.dir(resultArray);
         }
